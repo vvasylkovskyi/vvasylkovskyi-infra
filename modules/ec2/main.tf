@@ -10,7 +10,7 @@ resource "aws_instance" "portfolio" {
   security_groups             = [var.security_group_id]
   associate_public_ip_address = true
   subnet_id                   = var.subnet_id
-  key_name                    = aws_key_pair.ssh-key.key_name
+  key_name                    = data.aws_key_pair.ssh-key.key_name
 user_data = <<-EOF
             #!/bin/bash
             sudo yum update -y || sudo apt-get update -y
