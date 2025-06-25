@@ -1,4 +1,4 @@
-resource "aws_key_pair" "ssh-key" {
+data "aws_key_pair" "ssh-key" {
   key_name   = "ec2-instance-key"
   public_key = var.ssh_public_key
 }
