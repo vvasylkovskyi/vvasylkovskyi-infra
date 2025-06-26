@@ -1,4 +1,11 @@
 output "dns_record" {
   value       = aws_route53_record.record.fqdn
-  description = "The FQDN of the www Route53 record"
+}
+
+output "aws_route53_zone_name" {
+    value = aws_route53_zone.main.name
+}
+
+output "aws_route53_zone_id" {
+    value = aws_route53_zone.main.id
 }

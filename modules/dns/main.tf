@@ -6,6 +6,10 @@ resource "aws_route53_record" "record" {
   zone_id = aws_route53_zone.main.zone_id
   name    = var.domain_name
   type    = "A"
-  ttl     = 60
-  records = [var.dns_record]
+    
+  alias {
+    name                   = var.aws_lb_dns_name
+    zone_id                = var.aws_lb_zone_id
+    evaluate_target_health = true
+  }
 }

@@ -11,12 +11,13 @@ resource "aws_instance" "portfolio" {
   associate_public_ip_address = true
   subnet_id                   = var.subnet_id
   key_name                    = aws_key_pair.ssh-key.key_name
-user_data = <<-EOF
+  user_data = <<-EOF
             #!/bin/bash
             sudo yum update -y || sudo apt-get update -y
-            sudo yum install -y python3 || sudo apt-get install -y python3
-            echo "<html><body><h1>Hello from Terraform EC2!</h1></body></html>" > index.html
-            nohup python3 -m http.server 80 &
+            sudo yum install -y docker || sudo apt-get install -y docker.io
+            sudo systemctl start docker
+            sudo systemctl enable docker
+            sudo docker run -d -p 80:80 vvasylkovskyi1/vvasylkovskyi-portfolio:latest
             EOF
 }
 

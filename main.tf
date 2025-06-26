@@ -16,8 +16,8 @@ module "ec2" {
   instance_ami      = var.instance_ami
   instance_type     = var.instance_type
   availability_zone = var.availability_zone
-  security_group_id = module.security_group.security_group_id
-  subnet_id         = module.network.subnet_id
+  security_group_id = module.security_group.security_group_ec2
+  subnet_id         = module.network.subnet_ids[0]
   ssh_public_key    = local.secrets.ssh_public_key
 }
 
@@ -25,4 +25,23 @@ module "aws_route53_record" {
   source       = "./modules/dns"
   domain_name  = var.domain_name
   dns_record   = module.ec2.public_ip
+  aws_lb_dns_name = module.alb.aws_lb_dns_name
+  aws_lb_zone_id = module.alb.aws_lb_zone_id
+}
+
+module "ssl_acm" {
+  source       = "./modules/acm"
+  domain_name  = var.domain_name
+  route53_zone = module.aws_route53_record.aws_route53_zone_name
+  aws_route53_zone_id = module.aws_route53_record.aws_route53_zone_id
+}
+
+module "alb" {
+    source = "./modules/alb"
+    acm_certificate_arn = module.ssl_acm.aws_acm_certificate_arn
+    aws_acm_certificate_cert = module.ssl_acm.aws_acm_certificate_cert
+    subnets = module.network.subnet_ids
+    vpc_id = module.network.vpc_id
+    security_group = module.security_group.security_group_alb
+    ec2_instance_id = module.ec2.instance_id
 }

@@ -4,17 +4,21 @@ resource "aws_vpc" "main" {
   enable_dns_support   = true
 }
 
-resource "aws_subnet" "portfolio" {
-  cidr_block        = var.subnet_cidr
-  vpc_id            = aws_vpc.main.id
-  availability_zone = var.availability_zone
-}
-
 resource "aws_internet_gateway" "portfolio" {
   vpc_id = aws_vpc.main.id
 }
 
-resource "aws_route_table" "portfolio" {
+data "aws_availability_zones" "available" {}
+resource "aws_subnet" "public" {
+  count                   = 2
+  cidr_block              = cidrsubnet(aws_vpc.main.cidr_block, 4, 2 + count.index)
+  availability_zone       = data.aws_availability_zones.available.names[count.index]
+  vpc_id                  = aws_vpc.main.id
+  map_public_ip_on_launch = true
+}
+
+
+resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
 
   route {
@@ -23,7 +27,13 @@ resource "aws_route_table" "portfolio" {
   }
 }
 
-resource "aws_route_table_association" "subnet-association" {
-  subnet_id      = aws_subnet.portfolio.id
-  route_table_id = aws_route_table.portfolio.id
+resource "aws_route_table_association" "public" {
+  count          = 2
+  subnet_id      = aws_subnet.public[count.index].id
+  route_table_id = aws_route_table.public.id
+}
+
+resource "aws_main_route_table_association" "public_main" {
+  vpc_id         = aws_vpc.main.id
+  route_table_id = aws_route_table.public.id
 }
