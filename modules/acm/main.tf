@@ -3,8 +3,6 @@
 provider "aws" {
   alias                    = "us_east_1"
   region                   = "us-east-1"
-  shared_credentials_files = ["~/.aws/credentials"]
-  profile                  = "vvasylkovskyi"
 }
 
 resource "aws_acm_certificate" "cert" {
