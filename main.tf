@@ -17,8 +17,13 @@ module "ec2" {
   instance_type     = var.instance_type
   availability_zone = var.availability_zone
   security_group_id = module.security_group.security_group_ec2
-  subnet_id         = module.network.subnet_ids[0]
+  subnet_id         = module.network.public_subnet_ids[0]
   ssh_public_key    = local.secrets.ssh_public_key
+  database_name = local.secrets.database_name
+  database_username = local.secrets.database_username
+  database_password = local.secrets.database_password
+  database_host = module.rds.database_host
+  database_port = module.rds.database_port
 }
 
 module "aws_route53_record" {
@@ -40,8 +45,17 @@ module "alb" {
     source = "./modules/alb"
     acm_certificate_arn = module.ssl_acm.aws_acm_certificate_arn
     aws_acm_certificate_cert = module.ssl_acm.aws_acm_certificate_cert
-    subnets = module.network.subnet_ids
+    subnets = module.network.public_subnet_ids
     vpc_id = module.network.vpc_id
     security_group = module.security_group.security_group_alb
     ec2_instance_id = module.ec2.instance_id
+}
+
+module "rds" {
+    source = "./modules/rds"
+    security_group = module.security_group.security_group_rds
+    database_name = local.secrets.database_name
+    database_username = local.secrets.database_username
+    database_password = local.secrets.database_password
+    private_subnet_ids = module.network.private_subnet_ids
 }
