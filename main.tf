@@ -58,4 +58,5 @@ module "rds" {
     database_username = local.secrets.database_username
     database_password = local.secrets.database_password
     private_subnet_ids = module.network.private_subnet_ids
+    public_subnet_ids = module.network.public_subnet_ids
 }
