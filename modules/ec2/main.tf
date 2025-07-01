@@ -23,14 +23,14 @@ resource "aws_instance" "portfolio" {
 
             # Add user to docker group
             sudo usermod -aG docker $USERNAME
-            
+
             sudo docker run -d -p 80:80 \
               -e DB_USER=${var.database_username} \
               -e DB_PASSWORD=${var.database_password} \
               -e DB_DATABASE_NAME=${var.database_name} \
               -e DB_HOST=${var.database_host} \
               -e DB_PORT=${var.database_port} \
-              vvasylkovskyi1/vvasylkovskyi-portfolio:latest
+              vvasylkovskyi1/vvasylkovskyi-portfolio:${var.docker_image_hash}
             EOF
 }
 

@@ -17,3 +17,8 @@ variable "domain_name" {
     description = "domain name"
     type = string
 }
+
+variable "docker_image_hash" {
+    description = "Docker Image Hash"
+    type = string
+}

@@ -24,6 +24,7 @@ module "ec2" {
   database_password = local.secrets.database_password
   database_host = module.rds.database_host
   database_port = module.rds.database_port
+  docker_image_hash = var.docker_image_hash
 }
 
 module "aws_route53_record" {
