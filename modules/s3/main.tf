@@ -37,6 +37,8 @@ resource "aws_s3_bucket_lifecycle_configuration" "this" {
     id     = "delete-old-objects"
     status = "Enabled"
 
+    filter {}
+
     expiration {
       days = 30
     }
