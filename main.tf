@@ -61,3 +61,8 @@ module "rds" {
     private_subnet_ids = module.network.private_subnet_ids
     public_subnet_ids = module.network.public_subnet_ids
 }
+
+# module "app_bucket" {
+#   source      = "./modules/s3_bucket"
+#   bucket_name = "my-app-bucket-name"
+# }
