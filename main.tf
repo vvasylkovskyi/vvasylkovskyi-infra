@@ -18,10 +18,10 @@ module "ec2" {
   availability_zone = var.availability_zone
   security_group_id = module.security_group.security_group_ec2
   subnet_id         = module.network.public_subnet_ids[0]
-  ssh_public_key    = local.secrets.ssh_public_key
-  database_name = local.secrets.database_name
-  database_username = local.secrets.database_username
-  database_password = local.secrets.database_password
+  ssh_public_key    = module.secrets.ssh_public_key
+  database_name = module.secrets.database_name
+  database_username = module.secrets.database_username
+  database_password = module.secrets.database_password
   database_host = module.rds.database_host
   database_port = module.rds.database_port
   docker_image_hash = var.docker_image_hash
@@ -55,12 +55,18 @@ module "alb" {
 module "rds" {
     source = "./modules/rds"
     security_group = module.security_group.security_group_rds
-    database_name = local.secrets.database_name
-    database_username = local.secrets.database_username
-    database_password = local.secrets.database_password
+    database_name = module.secrets.database_name
+    database_username = module.secrets.database_username
+    database_password = module.secrets.database_password
     private_subnet_ids = module.network.private_subnet_ids
     public_subnet_ids = module.network.public_subnet_ids
 }
+
+module "secrets" {
+    source = "./modules/secrets"
+    credentials_name = var.credentials_name
+}
+
 
 # module "app_bucket" {
 #   source      = "./modules/s3_bucket"

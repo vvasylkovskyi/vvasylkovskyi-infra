@@ -22,3 +22,8 @@ variable "docker_image_hash" {
     description = "Docker Image Hash"
     type = string
 }
+
+variable "credentials_name" {
+  description = "path for the secrets"
+  type = string
+}

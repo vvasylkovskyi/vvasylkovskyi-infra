@@ -13,11 +13,11 @@ resource "aws_dynamodb_table" "terraform_lock" {
   }
 }
 
-terraform {
-  backend "s3" {
-    bucket         = "vvasylkovskyi-portfolio-terraform-state-backend-v2"
-    key            = "terraform.tfstate"
-    region         = "us-east-1"
-    dynamodb_table = "terraform_state"
-  }
-}
+# terraform {
+#   backend "s3" {
+#     bucket         = "vvasylkovskyi-portfolio-terraform-state-backend-v2"
+#     key            = "terraform.tfstate"
+#     region         = "us-east-1"
+#     dynamodb_table = "terraform_state"
+#   }
+# }

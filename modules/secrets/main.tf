@@ -1,7 +1,7 @@
 data "aws_caller_identity" "current" {}
 
 data "aws_secretsmanager_secret" "app_secrets" {
-  name = "portfolio/app/credentials"
+  name = var.credentials_name
 }
 
 data "aws_secretsmanager_secret_version" "current" {
