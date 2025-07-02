@@ -20,9 +20,7 @@ resource "aws_iam_policy" "terraform_deployer_policy" {
       {
         Effect = "Allow"
         Action = [
-          "s3:PutObject",
-          "s3:GetObject",
-          "s3:ListBucket"
+          "s3:*"
         ]
         Resource = [
           "arn:aws:s3:::*",
