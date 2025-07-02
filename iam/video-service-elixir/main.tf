@@ -5,7 +5,7 @@ module "iam_user" {
 
 resource "aws_iam_policy" "terraform_deployer_policy" {
   name        = "elixir_s3_upload_policy"
-  description = "Allow put/get/list objects on all S3 buckets"
+  description = "Allow full S3 and DynamoDB access"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -28,6 +28,13 @@ resource "aws_iam_policy" "terraform_deployer_policy" {
           "arn:aws:s3:::*",
           "arn:aws:s3:::*/*"
         ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "dynamodb:*"
+        ]
+        Resource = "*"
       }
     ]
   })
