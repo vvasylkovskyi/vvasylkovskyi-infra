@@ -33,5 +33,6 @@ resource "aws_iam_policy" "terraform_deployer_policy" {
 # Attach Policy to IAM User
 resource "aws_iam_user_policy_attachment" "attach_policy" {
   user       = module.iam_user.name
-  policy_arn = aws_iam_policy.terraform_deployer_policy.arn
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess" # Temporary until we restrict the policies well
+  # policy_arn = aws_iam_policy.terraform_deployer_policy.arn
 }

@@ -1,15 +1,15 @@
 resource "aws_s3_bucket" "this" {
-  bucket = var.bucket_name
+  bucket        = var.bucket_name
   force_destroy = true
 }
 
 resource "aws_s3_bucket_public_access_block" "this" {
   bucket = aws_s3_bucket.this.id
 
-  block_public_acls   = true
-  block_public_policy = true
-  ignore_public_acls  = true
-  restrict_public_buckets = true
+  block_public_acls       = var.is_public ? false : true
+  block_public_policy     = var.is_public ? false : true
+  ignore_public_acls      = var.is_public ? false : true
+  restrict_public_buckets = var.is_public ? false : true
 }
 
 resource "aws_s3_bucket_versioning" "this" {
