@@ -10,3 +10,4 @@ variable "database_password" { type = string }
 variable "database_host" { type = string }
 variable "database_port" { type = string }
 variable "docker_image_hash" { type = string }
+variable "user_data" { type = string }
