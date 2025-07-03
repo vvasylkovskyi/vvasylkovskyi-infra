@@ -3,7 +3,7 @@ data "aws_route53_zone" "main" {
 }
 
 resource "aws_route53_record" "record" {
-  zone_id = aws_route53_zone.main.zone_id
+  zone_id = data.aws_route53_zone.main.zone_id
   name    = var.domain_name
   type    = "A"
 
