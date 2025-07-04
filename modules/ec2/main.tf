@@ -12,8 +12,6 @@ resource "aws_instance" "portfolio" {
   subnet_id                   = var.subnet_id
   key_name                    = aws_key_pair.ssh-key.key_name
 
-  depends_on = [var.database_host]
-
   user_data = var.user_data
 }
 
