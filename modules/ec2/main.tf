@@ -1,5 +1,5 @@
 resource "aws_key_pair" "ssh-key" {
-  key_name   = "ec2-instance-key"
+  key_name   = var.ssh_public_key_name
   public_key = var.ssh_public_key
 }
 
@@ -14,8 +14,6 @@ resource "aws_instance" "portfolio" {
 
   user_data = var.user_data
 }
-
-
 
 resource "aws_eip" "portfolio" {
   instance = aws_instance.portfolio.id
