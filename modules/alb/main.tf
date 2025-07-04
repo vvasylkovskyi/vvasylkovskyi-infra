@@ -22,7 +22,7 @@ resource "aws_lb_listener" "https" {
 }
 
 resource "aws_lb_target_group" "portfolio" {
-  name     = "${alb_name}-tg"
+  name     = "${var.alb_name}-tg"
   port     = 80
   protocol = "HTTP"
   vpc_id   = var.vpc_id
