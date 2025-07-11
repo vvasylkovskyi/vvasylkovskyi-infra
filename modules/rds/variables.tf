@@ -7,3 +7,5 @@ variable "public_subnet_ids" { type = list(string) }
 variable "database_identifier" { type = string }
 variable "database_engine" { type = string }
 variable "database_engine_version" { type = string }
+variable "db_public_subnet_group_name" { type = string }
+variable "db_private_subnet_group_name" { type = string }

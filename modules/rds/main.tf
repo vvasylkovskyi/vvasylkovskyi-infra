@@ -1,19 +1,11 @@
 resource "aws_db_subnet_group" "default" {
-  name       = "rds-private-subnet-group"
+  name       = var.db_private_subnet_group_name
   subnet_ids = [for id in var.private_subnet_ids : id]
-
-  tags = {
-    Name = "RDS Private Subnet Group"
-  }
 }
 
 resource "aws_db_subnet_group" "public" {
-  name       = "rds-public-subnet-group"
+  name       = var.db_public_subnet_group_name
   subnet_ids = [for id in var.public_subnet_ids : id]
-
-  tags = {
-    Name = "RDS Public Subnet Group"
-  }
 }
 
 resource "aws_db_instance" "database" {
