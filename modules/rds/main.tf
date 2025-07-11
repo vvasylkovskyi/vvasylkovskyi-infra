@@ -16,10 +16,10 @@ resource "aws_db_subnet_group" "public" {
   }
 }
 
-resource "aws_db_instance" "postgres" {
-  identifier         = "postgres-db"
-  engine             = "postgres"
-  engine_version     = "15"
+resource "aws_db_instance" "database" {
+  identifier         = var.database_identifier
+  engine             = var.database_engine
+  engine_version     = var.database_engine_version
   instance_class     = "db.t3.micro"
   allocated_storage  = 20
   storage_type       = "gp2"
