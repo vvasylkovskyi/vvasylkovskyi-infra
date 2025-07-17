@@ -67,10 +67,10 @@ module "secrets" {
     credentials_name = var.credentials_name
 }
 
-module "iot_thing" {
-  source = "./modules/iot-thing"
-  iot_thing_name = var.iot_thing_name
-}
+# module "iot_thing" {
+#   source = "./modules/iot-thing"
+#   iot_thing_name = var.iot_thing_name
+# }
 
 # module "app_bucket" {
 #   source      = "./modules/s3_bucket"

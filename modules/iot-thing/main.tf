@@ -4,21 +4,7 @@ resource "aws_iot_thing" "thing" {
 
 resource "aws_iot_policy" "publish_policy" {
   name = var.iot_policy_name
-  policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
-      {
-        "Effect": "Allow",
-        "Action": [
-          "iot:Connect",
-          "iot:Publish",
-          "iot:Subscribe",
-          "iot:Receive"
-        ],
-        "Resource": "*"
-      }
-    ]
-  })
+  policy = var.iot_policy
 }
 
 resource "aws_iot_certificate" "device_cert" {
