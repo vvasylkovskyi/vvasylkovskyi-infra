@@ -20,3 +20,7 @@ resource "aws_iot_policy_attachment" "attach_policy" {
   policy = aws_iot_policy.publish_policy.name
   target = aws_iot_certificate.device_cert.arn
 }
+
+data "aws_iot_endpoint" "iot_endpoint" {
+  endpoint_type = "iot:Data-ATS"
+}
