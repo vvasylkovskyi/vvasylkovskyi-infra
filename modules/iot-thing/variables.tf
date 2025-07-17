@@ -1,0 +1,1 @@
+variable "iot_thing_name" { type = string }

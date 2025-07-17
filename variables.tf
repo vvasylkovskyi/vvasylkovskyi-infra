@@ -27,3 +27,8 @@ variable "credentials_name" {
   description = "path for the secrets"
   type = string
 }
+
+variable "iot_thing_name" {
+  description = "Name of the IoT thing"
+  type        = string
+}
