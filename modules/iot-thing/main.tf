@@ -26,11 +26,11 @@ resource "aws_iot_certificate" "device_cert" {
 }
 
 resource "aws_iot_thing_principal_attachment" "attach_cert" {
-  thing       = aws_iot_thing.thing.id
-  principal   = aws_iot_certificate.device_cert.arn
+  thing     = aws_iot_thing.thing.name
+  principal = aws_iot_certificate.device_cert.arn
 }
 
 resource "aws_iot_policy_attachment" "attach_policy" {
-  policy     = aws_iot_policy.publish_policy.name
-  target     = aws_iot_certificate.device_cert.arn
+  policy = aws_iot_policy.publish_policy.name
+  target = aws_iot_certificate.device_cert.arn
 }
