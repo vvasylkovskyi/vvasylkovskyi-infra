@@ -3,7 +3,7 @@ resource "aws_iot_thing" "thing" {
 }
 
 resource "aws_iot_policy" "publish_policy" {
-  name = "RaspberryPiPublishPolicy"
+  name = var.iot_policy_name
   policy = jsonencode({
     "Version": "2012-10-17",
     "Statement": [
