@@ -36,3 +36,7 @@ jobs:
       - name: Terraform Validate
         run: terraform validate
         working-directory: apps/portfolio
+
+      - name: Terraform Apply
+        working-directory: apps/portfolio
+        run: terraform apply -auto-approve
