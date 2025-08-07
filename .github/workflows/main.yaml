@@ -10,7 +10,7 @@ on:
     workflow_dispatch:
       inputs:
       version:
-        description: 'Deploy VVasylkovskyi Notes'
+        description: 'Deploy App'
         required: true
 
 jobs:
@@ -31,6 +31,8 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
+        working-directory: apps/portfolio
 
       - name: Terraform Validate
         run: terraform validate
+        working-directory: apps/portfolio
