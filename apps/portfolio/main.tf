@@ -65,6 +65,11 @@ module "ec2" {
               -e NEXT_PUBLIC_POSTHOG_HOST=${module.secrets.secrets.posthog_host} \
               -e METERED_API_KEY_TURN_CREDENTIALS=${module.secrets.secrets.metered_api_key_turn_credentials} \
               vvasylkovskyi1/vvasylkovskyi-portfolio:${var.docker_image_hash_portfolio_fe}
+
+            sudo docker run -d --name rpi-product-app --network docker-internal-network -p 3000:3000 \
+              -e VIDEO_SERVICE_URL=${var.video_service_url} \
+              -e METERED_API_KEY_TURN_CREDENTIALS=${module.secrets.secrets.metered_api_key_turn_credentials} \
+              vvasylkovskyi1/rpi-product-app:${var.docker_image_hash_rpi_product_app}
             EOF
 }
 
