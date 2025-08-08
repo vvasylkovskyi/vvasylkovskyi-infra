@@ -5,7 +5,6 @@ variable "domain_name" { type = string }
 variable "route53_zone_id" { type = string }
 variable "docker_image_hash_portfolio_fe" { type = string }
 variable "docker_image_hash_video_service" { type = string }
-variable "docker_image_hash_rpi_product_app" { type = string }
 variable "credentials_name" { type = string }
 variable "lock_table" { type = string }
 variable "aws_region" { type = string }
