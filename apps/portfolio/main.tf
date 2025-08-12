@@ -77,6 +77,28 @@ module "aws_route53_record" {
   aws_lb_zone_id  = module.alb.aws_lb_zone_id
 }
 
+# Clerk Authentication Provider DNS 
+variable "clerk_cname_records" {
+  type = map(string)
+  default = {
+    clerk          = "frontend-api.clerk.services"
+    accounts       = "accounts.clerk.services"
+    clkmail        = "mail.6dzf3jivhtew.clerk.services"
+    "clk._domainkey"  = "dkim1.6dzf3jivhtew.clerk.services"
+    "clk2._domainkey" = "dkim2.6dzf3jivhtew.clerk.services"
+  }
+}
+
+resource "aws_route53_record" "clerk_cname" {
+  for_each = var.clerk_cname_records
+
+  zone_id = module.aws_route53_record.aws_route53_zone_id
+  name    = each.key
+  type    = "CNAME"
+  ttl     = 300
+  records = [each.value]
+}
+
 module "ssl_acm" {
   source              = "git::https://github.com/vvasylkovskyi/vvasylkovskyi-infra.git//modules/acm?ref=main"
   domain_name         = var.domain_name
