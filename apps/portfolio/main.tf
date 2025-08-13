@@ -64,6 +64,14 @@ module "ec2" {
               -e NEXT_PUBLIC_POSTHOG_KEY=${module.secrets.secrets.posthog_key} \
               -e NEXT_PUBLIC_POSTHOG_HOST=${module.secrets.secrets.posthog_host} \
               -e METERED_API_KEY_TURN_CREDENTIALS=${module.secrets.secrets.metered_api_key_turn_credentials} \
+              -e NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${module.secrets.secrets.clerk_api_key_publishable_key} \
+              -e CLERK_SECRET_KEY=${module.secrets.secrets.clerk_api_key_secret_key} \
+              -e NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in \
+              -e NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL=/ \
+              -e NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL=/ \
+              -e NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up \
+              -e NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL=/ \
+              -e NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL=/ \
               vvasylkovskyi1/vvasylkovskyi-portfolio:${var.docker_image_hash_portfolio_fe}
             EOF
 }
