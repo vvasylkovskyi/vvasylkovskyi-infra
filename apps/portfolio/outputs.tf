@@ -18,3 +18,12 @@ output "postgresql_database_port" {
   description = "Postgres Database Port"
 }
 
+output "cloudfront_dns_name" {
+  value       = module.cloudfront_cdn.domain_name
+  description = "CloudFront CDN Domain Name"
+}
+
+output "cloudfront_hosted_zone_id" {
+  value       = module.cloudfront_cdn.hosted_zone_id
+  description = "CloudFront CDN Hosted Zone ID"
+}

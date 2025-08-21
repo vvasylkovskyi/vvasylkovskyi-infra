@@ -76,12 +76,19 @@ module "ec2" {
             EOF
 }
 
-module "api_gateway" {
-  source              = "git::https://github.com/vvasylkovskyi/vvasylkovskyi-infra.git//modules/api-gateway?ref=main"
-  api_name            = "portfolio-gateway-api"
-  domain_name         = var.domain_name
+# module "api_gateway" {
+#   source              = "git::https://github.com/vvasylkovskyi/vvasylkovskyi-infra.git//modules/api-gateway?ref=main"
+#   api_name            = "portfolio-gateway-api"
+#   domain_name         = var.domain_name
+#   acm_certificate_arn = module.ssl_acm.aws_acm_certificate_arn
+#   ec2_public_url      = "http://${module.ec2.public_ip}:80"
+# }
+
+module "cloudfront_cdn" {
   acm_certificate_arn = module.ssl_acm.aws_acm_certificate_arn
-  ec2_public_url      = "http://${module.ec2.public_ip}"
+  route53_zone_id     = module.aws_route53_record.aws_route53_zone_id
+  ec2_public_ip       = module.ec2.public_ip
+  domain_name         = var.domain_name
 }
 
 module "aws_route53_record" {
@@ -89,8 +96,8 @@ module "aws_route53_record" {
   domain_name     = var.domain_name
   route53_zone_id = var.route53_zone_id
   dns_record      = module.ec2.public_ip
-  aws_dns_name    = module.api_gateway.aws_api_gateway_dns_name
-  aws_zone_id     = module.api_gateway.aws_api_gateway_dns_zone_id
+  aws_dns_name    = module.cloudfront_cdn.domain_name
+  aws_zone_id     = module.cloudfront_cdn.hosted_zone_id
 }
 
 # Clerk Authentication Provider DNS 
