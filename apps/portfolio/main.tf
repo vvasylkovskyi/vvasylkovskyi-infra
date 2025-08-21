@@ -52,6 +52,7 @@ module "ec2" {
               -e AWS_IOT_PATH_TO_CERT=${module.secrets.secrets.aws_iot_path_to_cert} \
               -e AWS_IOT_PATH_TO_KEY=${module.secrets.secrets.aws_iot_path_to_key} \
               -e AWS_IOT_PATH_TO_ROOT_CERT=${module.secrets.secrets.aws_iot_path_to_root_cert} \
+              -e CLERK_JWKS_URL=${module.secrets.secrets.clerk_jwks_url} \
               vvasylkovskyi1/vvasylkovskyi-video-service-web:${var.docker_image_hash_video_service}
 
             sudo docker run -d --name frontend --network docker-internal-network -p 80:80 \
