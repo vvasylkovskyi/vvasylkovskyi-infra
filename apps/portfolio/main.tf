@@ -77,12 +77,11 @@ module "ec2" {
 }
 
 module "api_gateway" {
-  source              = "git::https://github.com/your-repo/infra.git//modules/api-gateway?ref=main"
+  source              = "git::https://github.com/vvasylkovskyi/vvasylkovskyi-infra.git//modules/api-gateway?ref=main"
   api_name            = "portfolio-gateway-api"
   domain_name         = var.domain_name
   acm_certificate_arn = module.ssl_acm.aws_acm_certificate_arn
-  ec2_public_url      = "http://${module.ec2.public_ip}:80"
-  route53_zone_id     = var.route53_zone_id
+  ec2_public_url      = "http://${module.ec2.public_ip}"
 }
 
 module "aws_route53_record" {
