@@ -77,13 +77,22 @@ module "ec2" {
             EOF
 }
 
+module "api_gateway" {
+  source              = "git::https://github.com/your-repo/infra.git//modules/api-gateway?ref=main"
+  api_name            = "portfolio-gateway-api"
+  domain_name         = var.domain_name
+  acm_certificate_arn = module.ssl_acm.aws_acm_certificate_arn
+  ec2_public_url      = "http://${module.ec2.public_ip}:80"
+  route53_zone_id     = var.route53_zone_id
+}
+
 module "aws_route53_record" {
   source          = "git::https://github.com/vvasylkovskyi/vvasylkovskyi-infra.git//modules/dns?ref=main"
   domain_name     = var.domain_name
   route53_zone_id = var.route53_zone_id
   dns_record      = module.ec2.public_ip
-  aws_lb_dns_name = module.alb.aws_lb_dns_name
-  aws_lb_zone_id  = module.alb.aws_lb_zone_id
+  aws_dns_name    = module.api_gateway.aws_api_gateway_dns_name
+  aws_zone_id     = module.api_gateway.aws_api_gateway_dns_zone_id
 }
 
 # Clerk Authentication Provider DNS 
@@ -114,16 +123,16 @@ module "ssl_acm" {
   aws_route53_zone_id = module.aws_route53_record.aws_route53_zone_id
 }
 
-module "alb" {
-  source                   = "git::https://github.com/vvasylkovskyi/vvasylkovskyi-infra.git//modules/alb?ref=main"
-  acm_certificate_arn      = module.ssl_acm.aws_acm_certificate_arn
-  aws_acm_certificate_cert = module.ssl_acm.aws_acm_certificate_cert
-  subnets                  = module.network.public_subnet_ids
-  vpc_id                   = module.network.vpc_id
-  security_group           = module.security_group.security_group_alb
-  ec2_instance_id          = module.ec2.instance_id
-  alb_name                 = var.alb_name
-}
+# module "alb" {
+#   source                   = "git::https://github.com/vvasylkovskyi/vvasylkovskyi-infra.git//modules/alb?ref=main"
+#   acm_certificate_arn      = module.ssl_acm.aws_acm_certificate_arn
+#   aws_acm_certificate_cert = module.ssl_acm.aws_acm_certificate_cert
+#   subnets                  = module.network.public_subnet_ids
+#   vpc_id                   = module.network.vpc_id
+#   security_group           = module.security_group.security_group_alb
+#   ec2_instance_id          = module.ec2.instance_id
+#   alb_name                 = var.alb_name
+# }
 
 module "rds" {
   source             = "git::https://github.com/vvasylkovskyi/vvasylkovskyi-infra.git//modules/rds?ref=main"
