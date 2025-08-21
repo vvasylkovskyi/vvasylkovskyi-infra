@@ -85,19 +85,22 @@ module "ec2" {
 # }
 
 module "cloudfront_cdn" {
+  source          = "git::https://github.com/vvasylkovskyi/vvasylkovskyi-infra.git//modules/cloudfront?ref=main"
   acm_certificate_arn = module.ssl_acm.aws_acm_certificate_arn
   route53_zone_id     = module.aws_route53_record.aws_route53_zone_id
+  domain_name         = var.route53_zone_name
   ec2_public_ip       = module.ec2.public_ip
-  domain_name         = var.domain_name
+  alb_dns_name        = module.alb.dns_name
+  alb_zone_id        = module.alb.zone_id
 }
 
 module "aws_route53_record" {
   source          = "git::https://github.com/vvasylkovskyi/vvasylkovskyi-infra.git//modules/dns?ref=main"
   domain_name     = var.domain_name
-  route53_zone_id = var.route53_zone_id
+  route53_zone_id = var.route53_zone_name
   dns_record      = module.ec2.public_ip
-  aws_dns_name    = module.cloudfront_cdn.domain_name
-  aws_zone_id     = module.cloudfront_cdn.hosted_zone_id
+  aws_dns_name    = module.cloudfront_cdn.dns_name
+  aws_zone_id     = module.cloudfront_cdn.zone_id
 }
 
 # Clerk Authentication Provider DNS 
@@ -128,16 +131,17 @@ module "ssl_acm" {
   aws_route53_zone_id = module.aws_route53_record.aws_route53_zone_id
 }
 
-# module "alb" {
-#   source                   = "git::https://github.com/vvasylkovskyi/vvasylkovskyi-infra.git//modules/alb?ref=main"
-#   acm_certificate_arn      = module.ssl_acm.aws_acm_certificate_arn
-#   aws_acm_certificate_cert = module.ssl_acm.aws_acm_certificate_cert
-#   subnets                  = module.network.public_subnet_ids
-#   vpc_id                   = module.network.vpc_id
-#   security_group           = module.security_group.security_group_alb
-#   ec2_instance_id          = module.ec2.instance_id
-#   alb_name                 = var.alb_name
-# }
+module "alb" {
+  source                   = "git::https://github.com/vvasylkovskyi/vvasylkovskyi-infra.git//modules/alb?ref=main"
+  acm_certificate_arn      = module.ssl_acm.aws_acm_certificate_arn
+  aws_acm_certificate_cert = module.ssl_acm.aws_acm_certificate_cert
+  subnets                  = module.network.public_subnet_ids
+  vpc_id                   = module.network.vpc_id
+  security_group           = module.security_group.security_group_alb_http
+  ec2_instance_id          = module.ec2.instance_id
+  alb_name                 = var.alb_name
+  ssl_on                   = true
+}
 
 module "rds" {
   source             = "git::https://github.com/vvasylkovskyi/vvasylkovskyi-infra.git//modules/rds?ref=main"

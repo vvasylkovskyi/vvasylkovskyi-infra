@@ -10,3 +10,4 @@ variable "subnets" { type = list(string) }
 variable "security_group" { type = string }
 variable "ec2_instance_id" { type = string }
 variable "alb_name" { type = string }
+variable "ssl_on" { type = bool }

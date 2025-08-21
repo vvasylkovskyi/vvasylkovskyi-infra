@@ -23,7 +23,7 @@ resource "aws_security_group" "ec2" {
   }
 }
 
-resource "aws_security_group" "alb" {
+resource "aws_security_group" "alb_https" {
   vpc_id = var.vpc_id
 
   ingress {
@@ -40,6 +40,25 @@ resource "aws_security_group" "alb" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
+resource "aws_security_group" "alb_http" {
+  vpc_id = var.vpc_id
+
+  ingress {
+    cidr_blocks = ["0.0.0.0/0"]
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+  }
+    
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 
 resource "aws_security_group" "rds" {
   vpc_id = var.vpc_id

@@ -3,25 +3,26 @@ resource "aws_route53_record" "origin" {
   zone_id = var.route53_zone_id
   name    = "origin.${var.domain_name}"
   type    = "A"
-  ttl     = 300
-
-  records = [var.ec2_public_ip]
+  alias {
+    name                   = var.alb_dns_name
+    zone_id                = var.alb_zone_id
+    evaluate_target_health = true
+  }
 }
 
 resource "aws_cloudfront_distribution" "cdn" {
-  depends_on = [aws_acm_certificate_validation.cert]
   aliases = ["www.${var.domain_name}"]
   enabled             = true
   default_root_object = "index.html"
 
   origin {
-    domain_name = aws_route53_record.origin.fqdn
-    origin_id   = aws_route53_record.origin.fqdn
+    domain_name = var.alb_dns_name
+    origin_id   = "alb-origin"
 
     custom_origin_config {
       http_port              = 80
       https_port             = 443
-      origin_protocol_policy = "http-only"
+      origin_protocol_policy = "http-only" # Cloudfront -> ALB in HTTP
       origin_ssl_protocols   = ["TLSv1.2"]
     }
   }
@@ -29,7 +30,7 @@ resource "aws_cloudfront_distribution" "cdn" {
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = aws_route53_record.origin.fqdn
+    target_origin_id = "alb-origin"
 
     forwarded_values {
       query_string = false
