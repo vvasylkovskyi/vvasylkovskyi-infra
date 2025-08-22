@@ -52,7 +52,7 @@ module "ec2" {
               -e AWS_IOT_PATH_TO_KEY=${module.secrets.secrets.aws_iot_path_to_key} \
               -e AWS_IOT_PATH_TO_ROOT_CERT=${module.secrets.secrets.aws_iot_path_to_root_cert} \
               -e CLERK_JWKS_URL=${module.secrets.secrets.clerk_jwks_url} \
-              -e AWS_REGION=${module.secrets.secrets.aws_region} \
+              -e AWS_DEFAULT_REGION=${module.secrets.secrets.aws_region} \
               -e AWS_ACCESS_KEY_ID=${module.secrets.secrets.aws_access_key_id} \
               -e AWS_SECRET_ACCESS_KEY=${module.secrets.secrets.aws_secret_access_key} \
               vvasylkovskyi1/vvasylkovskyi-video-service-web:${var.docker_image_hash_video_service}
