@@ -46,7 +46,7 @@ module "api_gateway" {
   api_name            = "cloudmeter-backend-gateway-api"
   domain_name         = var.domain_name
   acm_certificate_arn = module.ssl_acm.aws_acm_certificate_arn
-  ec2_public_url      = "http://${module.ec2.public_ip}:80"
+  ec2_public_url      = "http://${module.ec2.public_ip}:4000"
 }
 
 # module "cloudfront_cdn" {
