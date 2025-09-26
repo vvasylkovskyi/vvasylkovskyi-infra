@@ -41,13 +41,6 @@ module "ec2" {
             EOF
 }
 
-module "api_gateway" {
-  source              = "git::https://github.com/vvasylkovskyi/vvasylkovskyi-infra.git//modules/api-gateway?ref=main"
-  api_name            = "cloudmeter-backend-gateway-api"
-  domain_name         = var.domain_name
-  acm_certificate_arn = module.ssl_acm.aws_acm_certificate_arn
-  ec2_public_url      = "http://${module.ec2.public_ip}:4000"
-}
 
 # module "cloudfront_cdn" {
 #   source          = "git::https://github.com/vvasylkovskyi/vvasylkovskyi-infra.git//modules/cloudfront?ref=main"
@@ -64,9 +57,18 @@ module "aws_route53_record" {
   domain_name     = var.domain_name
   route53_zone_id = var.route53_zone_name
   dns_record      = module.ec2.public_ip
-  aws_dns_name    = module.alb.dns_name
-  aws_zone_id     = module.alb.zone_id
+  aws_dns_name    = module.api_gateway.aws_api_gateway_dns_name
+  aws_zone_id     = module.api_gateway.aws_api_gateway_dns_zone_id
 }
+
+module "api_gateway" {
+  source              = "git::https://github.com/vvasylkovskyi/vvasylkovskyi-infra.git//modules/api-gateway?ref=main"
+  api_name            = "cloudmeter-backend-gateway-api"
+  domain_name         = var.domain_name
+  acm_certificate_arn = module.ssl_acm.aws_acm_certificate_arn
+  ec2_public_url      = "http://${module.ec2.public_ip}:4000"
+}
+
 
 module "ssl_acm" {
   source              = "git::https://github.com/vvasylkovskyi/vvasylkovskyi-infra.git//modules/acm?ref=main"

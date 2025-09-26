@@ -1,3 +1,5 @@
 .terraform
 .env
 debug_dump
+terraform.tfstate
+terraform.tfstate.backup
