@@ -10,7 +10,7 @@ on:
     workflow_dispatch:
       inputs:
       version:
-        description: 'Deploy App'
+        description: "Deploy App"
         required: true
 
 jobs:
@@ -31,12 +31,12 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
-        working-directory: apps/portfolio
+        working-directory: apps/cloudmeter-backend-api
 
       - name: Terraform Validate
         run: terraform validate
-        working-directory: apps/portfolio
+        working-directory: apps/cloudmeter-backend-api
 
       - name: Terraform Apply
-        working-directory: apps/portfolio
+        working-directory: apps/cloudmeter-backend-api
         run: terraform apply -auto-approve
