@@ -4,6 +4,7 @@ variable "instance_type" { type = string }
 variable "domain_name" { type = string }
 variable "route53_zone_name" { type = string }
 variable "docker_image_hash_cloud_meter_backend_api" { type = string }
+variable "docker_image_hash_cloud_meter_mcp" { type = string }
 variable "credentials_name" { type = string }
 variable "lock_table" { type = string }
 variable "aws_region" { type = string }
