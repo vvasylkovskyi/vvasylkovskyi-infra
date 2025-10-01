@@ -37,6 +37,7 @@ module "ec2" {
 
             sudo docker run -d --name video-service --network docker-internal-network \
               -p 4000:4000 \
+              -e OPENAI_API_KEY=${module.secrets.secrets.openai_api_key} \
               vvasylkovskyi1/vvasylkovskyi-cloud-meter-backend-api:${var.docker_image_hash_cloud_meter_backend_api}
             EOF
 }
