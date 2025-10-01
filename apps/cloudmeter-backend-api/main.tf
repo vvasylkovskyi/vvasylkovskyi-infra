@@ -35,10 +35,15 @@ module "ec2" {
 
             docker network create docker-internal-network
 
-            sudo docker run -d --name video-service --network docker-internal-network \
+            sudo docker run -d --name cloud-meter-backend --network docker-internal-network \
               -p 4000:4000 \
               -e OPENAI_API_KEY=${module.secrets.secrets.openai_api_key} \
               vvasylkovskyi1/vvasylkovskyi-cloud-meter-backend-api:${var.docker_image_hash_cloud_meter_backend_api}
+
+            sudo docker run -d --name cloud-meter-mcp --network docker-internal-network \
+              -p 4001:4001 \
+              vvasylkovskyi1/vvasylkovskyi-cloud-meter-mcp:${var.docker_image_hash_cloud_meter_mcp}
+
             EOF
 }
 
@@ -67,9 +72,17 @@ module "api_gateway" {
   api_name            = "cloudmeter-backend-gateway-api"
   domain_name         = var.domain_name
   acm_certificate_arn = module.ssl_acm.aws_acm_certificate_arn
-  ec2_public_url      = "http://${module.ec2.public_ip}:4000"
-}
 
+  ec2_public_urls = [
+    "http://${module.ec2.public_ip}:4000",
+    "http://${module.ec2.public_ip}:4001"
+  ]
+  
+  subpaths = [
+    "/api",
+    "/mcp"
+  ]
+}
 
 module "ssl_acm" {
   source              = "git::https://github.com/vvasylkovskyi/vvasylkovskyi-infra.git//modules/acm?ref=main"
