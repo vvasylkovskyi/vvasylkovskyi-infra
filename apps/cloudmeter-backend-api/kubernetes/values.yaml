@@ -1,0 +1,24 @@
+replicaCount: 1
+image:
+  repository: vvasylkovskyi1/vvasylkovskyi-cloud-meter-backend-api
+  tag: d9cb1e7d6621a3ba9f29f4e763dc8792ec08e87d
+service:
+  type: ClusterIP
+  port: 80
+ingress:
+  enabled: true
+  host: cloudmeter-backend-api.viktorvasylkovskyi.com
+  path: /
+secrets: 
+  aws_path: portfolio/app/credentials
+  secret_name: cloud-meter-secret
+resources:
+  requests:
+    # Allow guaranteed resource allocation to the pod
+    cpu: '100m' # <-- millicores (1/1000 of a CPU core)
+    memory: '128Mi' # <-- Mebibyte (2^128 ~ 134MB)
+  limits:
+    # Limit of the pod resources at peak
+    # Kubernetes kills pods if they exceed their memory limit (OOMKilled)
+    cpu: '300m'
+    memory: '256Mi'

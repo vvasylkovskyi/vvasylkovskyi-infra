@@ -1,0 +1,4 @@
+apiVersion: v2
+name: cloudmeter-backend
+description: Simple Helm chart for Cloud Meter Backend
+version: 0.1.0
