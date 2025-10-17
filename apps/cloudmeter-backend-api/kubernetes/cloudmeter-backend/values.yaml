@@ -1,7 +1,7 @@
 replicaCount: 1
 image:
   repository: vvasylkovskyi1/vvasylkovskyi-cloud-meter-backend-api
-  tag: d9cb1e7d6621a3ba9f29f4e763dc8792ec08e87d
+  tag: 53554cd2b98d0b3f4eeddd4590cdbb8c6885aee4
 service:
   type: ClusterIP
   port: 80
